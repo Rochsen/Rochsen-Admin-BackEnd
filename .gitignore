@@ -135,3 +135,6 @@ dmypy.json
 
 # 不用github的CI/CD
 .github
+
+# uv.lock
+uv.lock
