@@ -42,12 +42,12 @@ def create_jwt_token(user_id: str) -> JWTToken:
 
 
 def verify_jwt_token(token: str) -> JWTTokenPayload:
-    # Pay attention to verify_signature passed explicite, even if it is the default.
-    # Verification is based on expected payload fields like "exp", "iat" etc.
-    # so if you rename for example "exp" to "my_custom_exp", this is gonna break,
-    # jwt.ExpiredSignatureError will not be raised, that can potentialy
-    # be major security risk - not validating tokens at all.
-    # If unsure, jump into jwt.decode code, make sure tests are passing
+    # 注意验证传递的 verify_signature 参数，即使它是默认值。
+    # 验证是基于预期的有效载荷字段，比如 "exp"、"iat" 等。
+    # 所以如果你把例如 "exp" 重命名为 "my_custom_exp"，这将会导致失败，
+    # jwt.ExpiredSignatureError 将不会被抛出，这可能成为
+    # 一个严重的安全风险——完全不验证令牌。
+    # 如果不确定，请查看 jwt.decode 代码，确保测试通过
     # https://pyjwt.readthedocs.io/en/stable/usage.html#encoding-decoding-tokens-with-hs256
 
     try:

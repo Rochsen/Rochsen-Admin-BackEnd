@@ -1,12 +1,12 @@
 from typing import Any
 
-JWT_ERROR_USER_REMOVED = "User removed"
-PASSWORD_INVALID = "Incorrect email or password"
-REFRESH_TOKEN_NOT_FOUND = "Refresh token not found"
-REFRESH_TOKEN_EXPIRED = "Refresh token expired"
-REFRESH_TOKEN_ALREADY_USED = "Refresh token already used"
-EMAIL_ADDRESS_ALREADY_USED = "Cannot use this email address"
-PASSWORD_EMPTY = "Password cannot be empty"
+JWT_ERROR_USER_REMOVED = "用户已删除"
+PASSWORD_INVALID = "邮箱或密码错误"
+REFRESH_TOKEN_NOT_FOUND = "未找到刷新令牌"
+REFRESH_TOKEN_EXPIRED = "刷新令牌已过期"
+REFRESH_TOKEN_ALREADY_USED = "刷新令牌已使用"
+EMAIL_ADDRESS_ALREADY_USED = "无法使用此电子邮件地址"
+PASSWORD_EMPTY = "密码不能为空"
 
 
 UNAUTHORIZED_RESPONSES: dict[int | str, dict[str, Any]] = {

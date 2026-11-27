@@ -28,7 +28,7 @@ from app.core.database_session import new_async_session
 router = APIRouter(responses=api_messages.UNAUTHORIZED_RESPONSES)
 
 
-@router.get("/me", response_model=UserResponse, description="Get current user")
+@router.get("/me", response_model=UserResponse, description="获取当前用户")
 async def read_current_user(
     current_user: User = Depends(dependencies.get_current_user),
 ) -> User:
@@ -38,7 +38,7 @@ async def read_current_user(
 @router.delete(
     "/me",
     status_code=status.HTTP_204_NO_CONTENT,
-    description="Delete current user",
+    description="删除当前用户",
 )
 async def delete_current_user(
     current_user: User = Depends(dependencies.get_current_user),
@@ -51,7 +51,7 @@ async def delete_current_user(
 @router.post(
     "/reset-password",
     status_code=status.HTTP_204_NO_CONTENT,
-    description="Update current user password",
+    description="更新当前用户密码",
 )
 async def reset_current_user_password(
     user_update_password: UserUpdatePasswordRequest,
@@ -67,7 +67,7 @@ async def reset_current_user_password(
     "/access-token",
     response_model=AccessTokenResponse,
     responses=api_messages.ACCESS_TOKEN_RESPONSES,
-    description="OAuth2 compatible token, get an access token for future requests using username and password",
+    description="兼容 OAuth2 的令牌，使用用户名和密码获取用于未来请求的访问令牌",
 )
 async def login_access_token(
     session: AsyncSession = Depends(new_async_session),
@@ -76,7 +76,7 @@ async def login_access_token(
     user = await session.scalar(select(User).where(User.email == form_data.username))
 
     if user is None:
-        # this is naive method to not return early
+        # 这是一个不提前返回的天真方法
         verify_password(form_data.password, DUMMY_PASSWORD)
 
         raise HTTPException(
@@ -112,7 +112,7 @@ async def login_access_token(
     "/refresh-token",
     response_model=AccessTokenResponse,
     responses=api_messages.REFRESH_TOKEN_RESPONSES,
-    description="OAuth2 compatible token, get an access token for future requests using refresh token",
+    description="兼容 OAuth2 的令牌，使用刷新令牌获取未来请求的访问令牌",
 )
 async def refresh_token(
     data: RefreshTokenRequest,
@@ -164,7 +164,7 @@ async def refresh_token(
 @router.post(
     "/register",
     response_model=UserResponse,
-    description="Create new user",
+    description="创建新用户",
     status_code=status.HTTP_201_CREATED,
 )
 async def register_new_user(

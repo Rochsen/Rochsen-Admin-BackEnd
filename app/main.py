@@ -3,6 +3,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from uvicorn import run
 
 from app.auth.views import router as auth_router
 from app.core import lifespan
@@ -13,9 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 app = FastAPI(
-    title="minimal fastapi postgres template",
+    title="个人管理系统",
     version="8.0.0",
-    description="https://github.com/rafsaf/minimal-fastapi-postgres-template",
+    description="https://github.com/Rochsen/Rochsen-Admin-BackEnd",
     openapi_url="/openapi.json",
     docs_url="/",
     lifespan=lifespan.lifespan,
@@ -24,7 +25,7 @@ app = FastAPI(
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(probe_router, prefix="/probe", tags=["probe"])
 
-# Sets all CORS enabled origins
+# 设置所有启用 CORS 的来源
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -36,8 +37,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Guards against HTTP Host Header attacks
+# 防护 HTTP 主机头攻击
 app.add_middleware(
     TrustedHostMiddleware,
     allowed_hosts=get_settings().security.allowed_hosts,
 )
+
+
+if __name__ == "__main__":
+    run("app.main:app", host="0.0.0.0", port=8000, reload=True)
