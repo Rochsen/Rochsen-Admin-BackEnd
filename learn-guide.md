@@ -2,7 +2,7 @@
 
 这是一个 FastAPI + PostgreSQL 的后端模板，业务几乎都在登录鉴权上。按「先把一条请求点通，再顺着代码读」来学，不要按文件夹从头扫。
 
-服务启动后打开 http://localhost:8000/ ，这是接口文档（`docs_url` 配在根路径 `/`）。
+服务启动后打开 http://localhost:8864/ ，这是接口文档（`docs_url` 配在根路径 `/`）。前端开发地址是 http://localhost:5840 ，已写在 `.env` 的 `SECURITY__BACKEND_CORS_ORIGINS` 里。
 
 ## 本地怎么跑
 
@@ -35,7 +35,7 @@ python -m app.main
 `main.py` 末尾必须把应用写成导入字符串：
 
 ```python
-run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+run("app.main:app", host="0.0.0.0", port=8864, reload=True)
 ```
 
 热重载时 uvicorn 要重新导入模块。传入 `app` 这个对象时，热重载开不起来，进程会直接退出。
