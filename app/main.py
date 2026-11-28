@@ -9,6 +9,7 @@ from app.auth.views import router as auth_router
 from app.core import lifespan
 from app.core.config import get_settings
 from app.probe.views import router as probe_router
+from app.user.views import router as user_router
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +24,7 @@ app = FastAPI(
 )
 
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
+app.include_router(user_router, prefix="/user", tags=["user"])
 app.include_router(probe_router, prefix="/probe", tags=["probe"])
 
 # 设置所有启用 CORS 的来源

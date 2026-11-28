@@ -1,17 +1,17 @@
-# File with environment variables and general configuration logic.
-# Env variables are combined in nested groups like "Security", "Database" etc.
-# So environment variable (case-insensitive) for jwt_secret_key will be "security__jwt_secret_key"
+# 包含环境变量和通用配置逻辑的文件。
+# 环境变量按嵌套组组合，例如 "Security"、"Database" 等。
+# 因此，jwt_secret_key 的环境变量（不区分大小写）将是 "security__jwt_secret_key"
 #
-# Pydantic priority ordering:
+# Pydantic 优先级顺序：
 #
-# 1. (Most important, will overwrite everything) - environment variables
-# 2. `.env` file in root folder of project
-# 3. Default values
+# 1. （最重要，会覆盖所有内容）- 环境变量
+# 2. 项目根文件夹中的 `.env` 文件
+# 3. 默认值
 #
-# "sqlalchemy_database_uri" is computed field that will create valid database URL
+# "sqlalchemy_database_uri" 是计算字段，将创建有效的数据库 URL
 #
-# See https://pydantic-docs.helpmanual.io/usage/settings/
-# Note, complex types like lists are read as json-encoded strings.
+# 参见 https://pydantic-docs.helpmanual.io/usage/settings/
+# 注意，像列表这样的复杂类型将以 JSON 编码的字符串读取。
 
 
 import logging.config

@@ -2,6 +2,7 @@ import secrets
 import time
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
@@ -21,9 +22,15 @@ from app.auth.schemas import (
     UserCreateRequest,
     UserResponse,
     UserUpdatePasswordRequest,
+    VbenLoginData,
+    VbenLoginRequest,
 )
+from app.core.api_response import ApiResult
 from app.core.config import get_settings
 from app.core.database_session import new_async_session
+
+# 与 Vben 演示页按钮权限码一致，当前账号统一按超级管理员返回
+VBEN_ACCESS_CODES = ["AC_100100", "AC_100110", "AC_100120", "AC_100010"]
 
 router = APIRouter(responses=api_messages.UNAUTHORIZED_RESPONSES)
 
@@ -200,3 +207,59 @@ async def register_new_user(
         )
 
     return user
+
+
+def vben_error(message: str, status_code: int) -> JSONResponse:
+    return JSONResponse(
+        status_code=status_code,
+        content={
+            "code": -1,
+            "data": None,
+            "message": message,
+        },
+    )
+
+
+@router.post(
+    "/login",
+    response_model=ApiResult[VbenLoginData],
+    description="Vben 登录，请求体为用户名和密码，成功时返回 accessToken",
+)
+async def login(
+    data: VbenLoginRequest,
+    session: AsyncSession = Depends(new_async_session),
+) -> ApiResult[VbenLoginData] | JSONResponse:
+    if data.username.strip() == "" or data.password.strip() == "":
+        return vben_error(
+            api_messages.USERNAME_AND_PASSWORD_REQUIRED,
+            status.HTTP_400_BAD_REQUEST,
+        )
+
+    user = await session.scalar(select(User).where(User.email == data.username))
+    if user is None:
+        verify_password(data.password, DUMMY_PASSWORD)
+        return vben_error(api_messages.PASSWORD_INVALID, status.HTTP_403_FORBIDDEN)
+
+    if not verify_password(data.password, user.hashed_password):
+        return vben_error(api_messages.PASSWORD_INVALID, status.HTTP_403_FORBIDDEN)
+
+    jwt_token = create_jwt_token(user_id=user.user_id)
+    return ApiResult(data=VbenLoginData(accessToken=jwt_token.access_token))
+
+
+@router.get(
+    "/codes",
+    response_model=ApiResult[list[str]],
+    description="获取当前用户权限码",
+)
+async def read_access_codes(
+    _: User = Depends(dependencies.get_current_user),
+) -> ApiResult[list[str]]:
+    return ApiResult(data=VBEN_ACCESS_CODES)
+
+
+@router.post(
+    "/logout", response_model=ApiResult[str], description="退出登录状态，返回登录界面"
+)
+async def logout() -> ApiResult[str]:
+    return ApiResult(data="")

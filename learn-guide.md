@@ -40,6 +40,42 @@ run("app.main:app", host="0.0.0.0", port=8864, reload=True)
 
 热重载时 uvicorn 要重新导入模块。传入 `app` 这个对象时，热重载开不起来，进程会直接退出。
 
+在安装了 fastapi[standard] 后，启动方式如下：
+
+```powershell
+uv run fastapi dev --port 8864
+```
+
+能够获得输出信息如下：
+
+```powershell
+
+ ⚡️ Starting FastAPI in development mode
+
+ 🐍 Using import string: app.main:app
+
+ 🌐 Server started at http://127.0.0.1:8864
+    Documentation at http://127.0.0.1:8864/docs
+
+  Logs:
+
+ ▕  Will watch for changes in these directories: ['D:\\project\\Rochsen-Admin-BackEnd']
+ ▕  Uvicorn running on http://127.0.0.1:8864 (Press CTRL+C to quit)
+ ▕  Started reloader process [23440] using WatchFiles
+ ▕  Started server process [29792]
+ ▕  Waiting for application startup.
+2026-11-28 00:42:06,450 [INFO] app.core.lifespan: starting application...
+2026-11-28 00:42:06,451 [INFO] app.core.lifespan: starting prometheus client server on interface127.0.0.1 port 9090
+ ▕  Application startup complete.
+ ▕  127.0.0.1:11285 - "GET / HTTP/1.1" 200
+ ▕  127.0.0.1:2787 - "GET /json/version HTTP/1.1" 404
+ ▕  127.0.0.1:14367 - "GET / HTTP/1.1" 200
+ ▕  127.0.0.1:14367 - "GET /openapi.json HTTP/1.1" 200
+ ▕  127.0.0.1:9207 - "GET / HTTP/1.1" 200
+ ▕  127.0.0.1:9207 - "GET /openapi.json HTTP/1.1" 200
+```
+
+
 ## 第 1 步：把接口点一遍
 
 在文档页按这个顺序试：

@@ -7,6 +7,7 @@ REFRESH_TOKEN_EXPIRED = "刷新令牌已过期"
 REFRESH_TOKEN_ALREADY_USED = "刷新令牌已使用"
 EMAIL_ADDRESS_ALREADY_USED = "无法使用此电子邮件地址"
 PASSWORD_EMPTY = "密码不能为空"
+USERNAME_AND_PASSWORD_REQUIRED = "用户名和密码不能为空"
 
 
 UNAUTHORIZED_RESPONSES: dict[int | str, dict[str, Any]] = {
